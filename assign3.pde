@@ -2,7 +2,7 @@
  Assignment 3
  Author:          Bao Yuchen
  Student Number:  103254021
- Update:          2015/11/5
+ Update:          2015/11/05
  */
 
 final int MOUSE_LEFT = 37, MOUSE_RIGHT = 39, MOUSE_MID = 3;
@@ -648,8 +648,8 @@ class GameTitle extends DrawingOBJ {
 class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
 
   public int level, hp;
-
-  private int bg2x = 640, speed = 5, cnt =0, teamCnt;
+  
+  private int bg2x = 640, speed = 5, cnt =0, teamCnt,teamId;
   private boolean listChange;
   private ArrayList<DrawingOBJ>  drawingArray;
   private Fighter fighter = null;
@@ -665,6 +665,7 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
 
     hp = 20;
     level = 0;
+    teamId = 0;
 
     fighter = new Fighter();
     fighter.setHP(hp) ;
@@ -699,10 +700,13 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
   }
 
   private void randomTeam() {
-    int tt = floor(random(3));
+    teamId++;
+    if (teamId>2){
+      teamId = 0;
+    }
     int yy;
     int s = floor(random(1, 5));
-    if (tt==0) {
+    if (teamId==0) {
       yy= floor(random(440)+20);
       teamCnt = 5;
       for (int i =0; i<5; i++) {
@@ -712,7 +716,7 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
         hehe.eSpeed = s;
         drawingArray.add(hehe);
       }
-    } else if (tt==1) {
+    } else if (teamId==1) {
       yy= floor(random(240)+20);
       teamCnt = 5;
       for (int i =0; i<5; i++) {
