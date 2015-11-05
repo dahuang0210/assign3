@@ -2,7 +2,7 @@
  Assignment 3
  Author:          Bao Yuchen
  Student Number:  103254021
- Update:          2015/11/205
+ Update:          2015/11/05
  */
 
 final int MOUSE_LEFT = 37, MOUSE_RIGHT = 39, MOUSE_MID = 3;
@@ -186,6 +186,7 @@ class GamePlayScene implements ScreenChangeListener {
   public void endGame(int level) {
     onScreenChange();
     GameEnd newScreen = new GameEnd(this);
+    newScreen.level = level;
     drawingObj = newScreen;
     mouseListener = newScreen;
   }
@@ -485,7 +486,7 @@ class Enemy extends DrawingOBJ {
     setIsDrawSelf(false);
     this.listener = listener;
     this.target = target;
-    isInTeam = true;
+    isInTeam = false;
     randomEnemy(true);
     eSpeed = floor(eSpeed * (level/50f+1));  
     hitCount = 0;
@@ -648,8 +649,8 @@ class GameTitle extends DrawingOBJ {
 class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
 
   public int level, hp;
-  
-  private int bg2x = 640, speed = 5, cnt =0, teamCnt,teamId;
+
+  private int bg2x = 640, speed = 5, cnt =0, teamCnt, teamId;
   private boolean listChange;
   private ArrayList<DrawingOBJ>  drawingArray;
   private Fighter fighter = null;
@@ -700,82 +701,92 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
   }
 
   private void randomTeam() {
-    
+
     int yy;
     int s = floor(random(1, 5));
     if (teamId==0) {
-      yy= floor(random(440)+20);
+      yy= floor(random(420)+30);
       teamCnt = 5;
       for (int i =0; i<5; i++) {
         Enemy hehe = new Enemy(fighter, this, level);
         hehe.x = hehe.x - 40*i;
         hehe.y = yy;
         hehe.eSpeed = s;
+        hehe.isInTeam = true;
         drawingArray.add(hehe);
       }
     } else if (teamId==1) {
-      yy= floor(random(240)+20);
+      yy= floor(random(260)+30);
       teamCnt = 5;
       for (int i =0; i<5; i++) {
         Enemy hehe = new Enemy(fighter, this, level);
         hehe.x = hehe.x - 40*i;
         hehe.y = yy+50*i;
         hehe.eSpeed = s;
+        hehe.isInTeam = true;
         drawingArray.add(hehe);
       }
     } else {
-      yy= floor(random(240)+100);
+      yy= floor(random(240)+120);
       teamCnt = 8;
       Enemy hehe = new Enemy(fighter, this, level);
       hehe.x = hehe.x;
       hehe.y = yy;
       hehe.eSpeed = s;
+      hehe.isInTeam = true;
       drawingArray.add(hehe);
-      
+
       hehe = new Enemy(fighter, this, level);
       hehe.x = hehe.x-40;
       hehe.y = yy-50;
       hehe.eSpeed = s;
+      hehe.isInTeam = true;
       drawingArray.add(hehe);
-      
+
       hehe = new Enemy(fighter, this, level);
       hehe.x = hehe.x-40;
       hehe.y = yy+50;
       hehe.eSpeed = s;
+      hehe.isInTeam = true;
       drawingArray.add(hehe);
-      
+
       hehe = new Enemy(fighter, this, level);
       hehe.x = hehe.x-80;
       hehe.y = yy-80;
       hehe.eSpeed = s;
+      hehe.isInTeam = true;
       drawingArray.add(hehe);
-      
+
       hehe = new Enemy(fighter, this, level);
       hehe.x = hehe.x-80;
       hehe.y = yy+80;
       hehe.eSpeed = s;
+      hehe.isInTeam = true;
       drawingArray.add(hehe);
-      
+
       hehe = new Enemy(fighter, this, level);
       hehe.x = hehe.x-120;
       hehe.y = yy-40;
       hehe.eSpeed = s;
+      hehe.isInTeam = true;
       drawingArray.add(hehe);
-      
+
       hehe = new Enemy(fighter, this, level);
       hehe.x = hehe.x-120;
       hehe.y = yy+40;
       hehe.eSpeed = s;
+      hehe.isInTeam = true;
       drawingArray.add(hehe);
-      
+
       hehe = new Enemy(fighter, this, level);
       hehe.x = hehe.x-160;
       hehe.y = yy;
       hehe.eSpeed = s;
+      hehe.isInTeam = true;
       drawingArray.add(hehe);
     }
     teamId++;
-    if (teamId>2){
+    if (teamId>2) {
       teamId = 0;
     }
   }
@@ -851,6 +862,7 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
 
   private void syncInfo() {
     title.hp = hp;
+    title.level= level;
     fighter.setHP(hp);
   }
 }
