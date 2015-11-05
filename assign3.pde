@@ -2,7 +2,7 @@
  Assignment 3
  Author:          Bao Yuchen
  Student Number:  103254021
- Update:          2015/11/05
+ Update:          2015/11/205
  */
 
 final int MOUSE_LEFT = 37, MOUSE_RIGHT = 39, MOUSE_MID = 3;
@@ -700,10 +700,7 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
   }
 
   private void randomTeam() {
-    teamId++;
-    if (teamId>2){
-      teamId = 0;
-    }
+    
     int yy;
     int s = floor(random(1, 5));
     if (teamId==0) {
@@ -776,6 +773,10 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
       hehe.y = yy;
       hehe.eSpeed = s;
       drawingArray.add(hehe);
+    }
+    teamId++;
+    if (teamId>2){
+      teamId = 0;
     }
   }
 
