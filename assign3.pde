@@ -1,5 +1,5 @@
 /** 
- Assignment 1
+ Assignment 3
  Author:          Bao Yuchen
  Student Number:  103254021
  Update:          2015/11/05
@@ -693,8 +693,8 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
       for (int j = i+1; j < cnt; j++) {
         if (drawingArray.get(i).zOrder > drawingArray.get(j).zOrder) {
           DrawingOBJ temp = drawingArray.get(i);
-          drawingArray.set(i,drawingArray.get(j));
-          drawingArray.set(j,temp);
+          drawingArray.set(i, drawingArray.get(j));
+          drawingArray.set(j, temp);
         }
       }
     }
@@ -913,7 +913,7 @@ class GameStart extends DrawingOBJ implements MouseListener {
   public void mouseReleasedFun(int keyCode1) {
     if (keyCode1 == MOUSE_LEFT) {
       isPressButton = false;
-      if (listener != null) {
+      if (isOnButton && listener != null) {
         listener.startGame();
       }
     }
@@ -971,7 +971,9 @@ class GameEnd extends DrawingOBJ implements MouseListener {
   public void mouseReleasedFun(int keyCode1) {
     if (keyCode1 == MOUSE_LEFT) {
       isPressButton = false;
-      listener.restartGame();
+      if (isOnButton && listener != null) {
+        listener.restartGame();
+      }
     }
   }
   public void mousePressedFun(int keyCode1) {
