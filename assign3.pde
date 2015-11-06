@@ -688,7 +688,8 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
       drawingArray.get(i).drawFrame();
       if (listChange) {
         listChange = false;
-        break;
+        cnt = drawingArray.size();
+        i--;
       }
     }
   }
