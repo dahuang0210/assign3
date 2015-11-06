@@ -1,5 +1,5 @@
 /** 
- Assignment 3
+ Assignment 1
  Author:          Bao Yuchen
  Student Number:  103254021
  Update:          2015/11/05
@@ -19,7 +19,7 @@ private HashMap<resType, PImage> resourcesMap = null;
 private GamePlayScene gameMain = null;
 
 private void addImage(resType Key, String resName) {
-  if (! resourcesMap.containsKey(resName)) {
+  if (! resourcesMap.containsKey(Key)) {
     PImage newRes = loadImage(resName);
     resourcesMap.put(Key, newRes);
   }
@@ -221,16 +221,18 @@ abstract class DrawingOBJ {
   public ObjType classID = ObjType.NOTHING;
   public int objWidth, objHeight;
   public int x, y;
+  public int zOrder;
   private PImage img = null;
   private boolean isDrawSelf = true;
 
   public DrawingOBJ(int objWidth, int objHeight, PImage image, ObjType classID) {
     this.objWidth = objWidth;
     this.objHeight = objHeight;
-    this.img = image;
     this.classID = classID;
-    this.x = 0;
-    this.y = 0;
+    img = image;
+    x = 0;
+    y = 0;
+    zOrder = 0;
   }
 
   public void setIsDrawSelf(boolean isDrawSelf) {
@@ -266,7 +268,7 @@ abstract class DrawingOBJ {
     return false;
   }
 
-  void drawStrokeText(String str, color textColor, color strokeColor, int textx, int texty, int strokeWidth) {
+  public void drawStrokeText(String str, color textColor, color strokeColor, int textx, int texty, int strokeWidth) {
     fill(strokeColor);
     text(str, textx-strokeWidth, texty);
     text(str, textx+strokeWidth, texty);
@@ -460,7 +462,7 @@ class Treasure extends DrawingOBJ {
   /**
    * to random an treasure
    */
-  void randomTreasure() {
+  public void randomTreasure() {
     // x is from 20 to 620
     // y is from 20 to 460
     do {
@@ -670,20 +672,32 @@ class OnGaming extends DrawingOBJ implements KeyPressListener, GameDataChanged {
 
     fighter = new Fighter();
     fighter.setHP(hp) ;
+    fighter.zOrder = 1;
 
     drawingArray.add(fighter);
 
     title = new GameTitle();
     title.hp = hp;
+    title.zOrder = 3;
     drawingArray.add(title);
 
     randomTeam();
-
-    drawingArray.add(new Treasure(fighter, this));
+    Treasure t = new Treasure(fighter, this);
+    t.zOrder = 2;
+    drawingArray.add(t);
   }
 
   public void SpecialDraw() {
     cnt = drawingArray.size();
+    for (int i = 0; i < cnt; i++) {
+      for (int j = i+1; j < cnt; j++) {
+        if (drawingArray.get(i).zOrder > drawingArray.get(j).zOrder) {
+          DrawingOBJ temp = drawingArray.get(i);
+          drawingArray.set(i,drawingArray.get(j));
+          drawingArray.set(j,temp);
+        }
+      }
+    }
     for (int i = 0; i < cnt; i++) {
       drawingArray.get(i).drawFrame();
       if (listChange) {
